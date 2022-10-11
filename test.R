@@ -9,8 +9,15 @@ nrows=2720
 ncols=2640
 xmax = xmin + nrows*100
 ymax = ymin + ncols*100
-x <- terra::rast(nrows = nrows, ncols = ncols, xmin = xmin, ymin = ymin, xmax = xmax, ymax = ymax,
+x100 <- terra::rast(nrows = nrows, ncols = ncols, xmin = xmin, ymin = ymin, xmax = xmax, ymax = ymax,
                  resolution = c(100,100))
+
+nrows=2720/2
+ncols=2640/2
+xmax = xmin + nrows*200
+ymax = ymin + ncols*200
+x200 <- terra::rast(nrows = nrows, ncols = ncols, xmin = xmin, ymin = ymin, xmax = xmax, ymax = ymax,
+                    resolution = c(200,200))
 
 # Load PNASM limits (zona periferica)
 ppnn = sf::st_read("~/OneDrive/Datasets/ProtectedAreas/Spain/ParquesNacionales/ParquesNacionales_P_B.shp")
@@ -20,10 +27,12 @@ pnasm_perif = sf::st_read(paste0(dataset_path, "ParquesNacionales/PNASM/Sources/
 pnasm <- sf::st_transform(pnasm, sf::st_crs(pnasm_perif))
 boundaries <-sf::st_union(pnasm, pnasm_perif, by_feature = TRUE)
 
-sgt_pnasm <-landinit::buildTopography(boundaries, grid = x)
+sgt_pnasm <-landinit::buildTopography(boundaries, grid = x200)
+gc()
 
-v <- terra::as.points(sgt_pnasm)
+v <- sf::st_as_sf(terra::as.points(sgt_pnasm))
 
 v2 <- landinit::addLandCoverType(v)
+gc()
 
 v3 <- landinit::addSoilGridsParams(v2)

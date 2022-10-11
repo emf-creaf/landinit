@@ -1,7 +1,8 @@
-importFrom(terra, "rast", "resample", "crs", "vect")
-importFrom(medfateutils, "redefineSoilLayers", "modifySoilParams")
-importFrom(sf, "st_read","st_crs", "st_drop_geometry", "st_geometry",
+importFrom("terra", "rast", "resample", "crs", "vect")
+importFrom("medfateutils", "redefineSoilLayers", "modifySoilParams")
+importFrom("sf", "st_read","st_crs", "st_drop_geometry", "st_geometry",
                "st_as_sf", "st_transform", "st_intersects")
+importFrom("utils", "setTxtProgressBar", "txtProgressBar")
 
 export(buildTopography)
 export(addSoilGridsParams)

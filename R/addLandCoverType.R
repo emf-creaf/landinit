@@ -1,5 +1,12 @@
+#' Gets the land cover type of a target geometry
+#'
+#' @param pts target points
+#' @param dataset_path path to the 'Datasets' directory
+#' @param separate_forests boolean flag to separate forests from shrublands/grasslands
+#'
 addLandCoverType<-function(pts = NULL,
-                           dataset_path = "~/OneDrive/Datasets/"){
+                           dataset_path = "~/OneDrive/Datasets/",
+                           separate_forests = TRUE){
 
   message("1. Reading MFE25")
   mfe25_sf <- sf::st_read(paste0(dataset_path,"MFE/Sources/MFE25/mfe_Catalunia.shp"),
@@ -22,7 +29,12 @@ addLandCoverType<-function(pts = NULL,
   pts$lct = rep("static", length(usomfe))
   pts$lct[usomfe %in% c("Agua")] = "water"
   pts$lct[usomfe %in% c("Artificial")] = "artificial"
-  pts$lct[usomfe %in% c("Arbolado", "Arbolado disperso", "Arbolado ralo", "Desarbolado")] = "wildland"
+  if(separate_forests) {
+    pts$lct[usomfe %in% c("Arbolado", "Arbolado disperso", "Arbolado ralo")] = "forest"
+    pts$lct[usomfe %in% c("Desarbolado")] = "shrubland/grassland"
+  } else {
+    pts$lct[usomfe %in% c("Arbolado", "Arbolado disperso", "Arbolado ralo", "Desarbolado")] = "wildland"
+  }
   pts$lct[usomfe %in% c("Cultivos")] = "agriculture"
   pts$lct[tipostru %in% c("Afloramientos rocosos")] = "rock"
 
