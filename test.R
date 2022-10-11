@@ -1,4 +1,4 @@
-library(medfateinit)
+library(landinit)
 
 dataset_path = "~/OneDrive/Datasets/"
 
@@ -18,10 +18,12 @@ pnasm = ppnn[1,]
 pnasm_perif = sf::st_read(paste0(dataset_path, "ParquesNacionales/PNASM/Sources/Limits/ZonaPeriferica_AIGUESTORTES.shp"))
 
 pnasm <- sf::st_transform(pnasm, sf::st_crs(pnasm_perif))
-boundaries <-sf::st_union(pnasm, pnasm_perif)
+boundaries <-sf::st_union(pnasm, pnasm_perif, by_feature = TRUE)
 
-sgt_pnasm <-buildTopography(boundaries, grid = x)
+sgt_pnasm <-landinit::buildTopography(boundaries, grid = x)
 
-pts <- terra::as.points(sgt_pnasm)
+v <- terra::as.points(sgt_pnasm)
 
-pnasm_soils <- buildSoils(pts)
+v2 <- landinit::addLandCoverType(v)
+
+pnasm_soils <- landinit::buildSoils(v)

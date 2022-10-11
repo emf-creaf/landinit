@@ -1,3 +1,6 @@
 importFrom(terra, "rast", "resample", "crs", "vect")
+importFrom(medfateutils, "redefineSoilLayers", "modifySoilParams")
+
 export(buildTopography)
 export(buildSoils)
+export(addLandCoverType)
