@@ -32,7 +32,11 @@ gc()
 
 v <- sf::st_as_sf(terra::as.points(sgt_pnasm))
 
-v2 <- landinit::addLandCoverType(v)
+lct <- landinit::getLandCoverType(v)
 gc()
 
-v3 <- landinit::addSoilGridsParams(v2)
+soil_list <- landinit::getSoilGridsParams(v)
+
+fib <- landinit::buildForestImputationBasis()
+
+forest_list <- landinit::getForestList(v, fib, lct)

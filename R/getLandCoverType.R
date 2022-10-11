@@ -1,10 +1,10 @@
-#' Gets the land cover type of a target geometry
+#' Retrieves the land cover type of a target geometry
 #'
 #' @param pts target points
 #' @param dataset_path path to the 'Datasets' directory
 #' @param separate_forests boolean flag to separate forests from shrublands/grasslands
 #'
-addLandCoverType<-function(pts = NULL,
+getLandCoverType<-function(pts = NULL,
                            dataset_path = "~/OneDrive/Datasets/",
                            separate_forests = TRUE){
 

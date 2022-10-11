@@ -5,5 +5,7 @@ importFrom("sf", "st_read","st_crs", "st_drop_geometry", "st_geometry",
 importFrom("utils", "setTxtProgressBar", "txtProgressBar")
 
 export(buildTopography)
-export(addSoilGridsParams)
-export(addLandCoverType)
+export(getSoilGridsParams)
+export(getLandCoverType)
+export(buildForestImputationBasis)
+export(getForestList)

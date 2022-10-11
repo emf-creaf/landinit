@@ -5,7 +5,7 @@
 #' @param widths soil layer widths (in mm)
 #' @param crop_soil_depth truncates soil depth according to Shagguan et al. (2017)
 #'
-addSoilGridsParams<-function(pts, dataset_path = "~/OneDrive/Datasets/", widths = c(300,700,1000,2000),
+getSoilGridsParams<-function(pts, dataset_path = "~/OneDrive/Datasets/", widths = c(300,700,1000,2000),
                      crop_soil_depth = TRUE) {
 
   soilgrids_points_var<-function(pts_terra, var = "bdod") {
@@ -69,7 +69,6 @@ addSoilGridsParams<-function(pts, dataset_path = "~/OneDrive/Datasets/", widths 
     if(crop_soil_depth) soil_list[[i]] <- medfateutils::modifySoilParams(df_redef, bdricm[i])
     else soil_list[[i]] <- df_redef
   }
-  pts$soil <- soil_list
 #
 #
 #   #Prob of occurence of R horizon
@@ -82,7 +81,7 @@ addSoilGridsParams<-function(pts, dataset_path = "~/OneDrive/Datasets/", widths 
 #   bdticm<-terra::extract(m, terra::project(pts, terra::crs(m)))[,-1]
 #   bdticm <- bdticm*10 #cm to mm
 
-  return(pts)
+  return(soil_list)
 }
 
 
