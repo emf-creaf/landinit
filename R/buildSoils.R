@@ -1,4 +1,9 @@
-#' @export
+#' Builds a list of soil objects for a set of target point locations
+#'
+#' @param pts target points
+#' @param dataset_path path to the 'Datasets' directory
+#' @param widths soil layer widths (in mm)
+#'
 buildSoils<-function(pts, dataset_path = "~/OneDrive/Datasets/", widths = c(300,700,1000,2000)) {
 
   soilgrids_points_var<-function(pts, var = "bdod", dataset_path = "~/OneDrive/Datasets/") {
