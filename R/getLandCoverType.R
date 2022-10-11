@@ -26,17 +26,17 @@ getLandCoverType<-function(pts = NULL,
   for_ws = mfe25data[as.numeric(a),]
   tipostru = for_ws$tipo_estru
   usomfe = for_ws$usomfe
-  pts$lct = rep("static", length(usomfe))
-  pts$lct[usomfe %in% c("Agua")] = "water"
-  pts$lct[usomfe %in% c("Artificial")] = "artificial"
+  lct = rep("static", length(usomfe))
+  lct[usomfe %in% c("Agua")] = "water"
+  lct[usomfe %in% c("Artificial")] = "artificial"
   if(separate_forests) {
-    pts$lct[usomfe %in% c("Arbolado", "Arbolado disperso", "Arbolado ralo")] = "forest"
-    pts$lct[usomfe %in% c("Desarbolado")] = "shrubland/grassland"
+    lct[usomfe %in% c("Arbolado", "Arbolado disperso", "Arbolado ralo")] = "forest"
+    lct[usomfe %in% c("Desarbolado")] = "shrubland/grassland"
   } else {
-    pts$lct[usomfe %in% c("Arbolado", "Arbolado disperso", "Arbolado ralo", "Desarbolado")] = "wildland"
+    lct[usomfe %in% c("Arbolado", "Arbolado disperso", "Arbolado ralo", "Desarbolado")] = "wildland"
   }
-  pts$lct[usomfe %in% c("Cultivos")] = "agriculture"
-  pts$lct[tipostru %in% c("Afloramientos rocosos")] = "rock"
+  lct[usomfe %in% c("Cultivos")] = "agriculture"
+  lct[tipostru %in% c("Afloramientos rocosos")] = "rock"
 
-  return(pts)
+  return(lct)
 }

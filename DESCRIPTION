@@ -10,6 +10,6 @@ Description: More about what it does (maybe more than one line)
     Use four spaces when indenting paragraphs within the Description.
 License: GPL (>= 2)
 Encoding: UTF-8
-Imports: sf, terra, medfateutils
+Imports: sf, terra, sp, medfateutils, medfateland, meteoland
 LazyData: true
 RoxygenNote: 7.2.1

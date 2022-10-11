@@ -12,6 +12,7 @@ ymax = ymin + ncols*100
 x100 <- terra::rast(nrows = nrows, ncols = ncols, xmin = xmin, ymin = ymin, xmax = xmax, ymax = ymax,
                  resolution = c(100,100))
 
+#Grid topology at 200 m resolution
 nrows=2720/2
 ncols=2640/2
 xmax = xmin + nrows*200
@@ -20,23 +21,16 @@ x200 <- terra::rast(nrows = nrows, ncols = ncols, xmin = xmin, ymin = ymin, xmax
                     resolution = c(200,200))
 
 # Load PNASM limits (zona periferica)
-ppnn = sf::st_read("~/OneDrive/Datasets/ProtectedAreas/Spain/ParquesNacionales/ParquesNacionales_P_B.shp")
+ppnn = sf::st_read(paste0(dataset_path, "ProtectedAreas/Spain/ParquesNacionales/ParquesNacionales_P_B.shp"),
+                   quiet = TRUE)
 pnasm = ppnn[1,]
-pnasm_perif = sf::st_read(paste0(dataset_path, "ParquesNacionales/PNASM/Sources/Limits/ZonaPeriferica_AIGUESTORTES.shp"))
+pnasm_perif = sf::st_read(paste0(dataset_path, "ParquesNacionales/PNASM/Sources/Limits/ZonaPeriferica_AIGUESTORTES.shp"),
+                          quiet = TRUE)
 
 pnasm <- sf::st_transform(pnasm, sf::st_crs(pnasm_perif))
 boundaries <-sf::st_union(pnasm, pnasm_perif, by_feature = TRUE)
 
-sgt_pnasm <-landinit::buildTopography(boundaries, grid = x200)
-gc()
+spl<-buildForestedLandscape(boundaries, grid = x200, dataset_path = dataset_path)
 
-v <- sf::st_as_sf(terra::as.points(sgt_pnasm))
+medfateland::shinyplotland(spl)
 
-lct <- landinit::getLandCoverType(v)
-gc()
-
-soil_list <- landinit::getSoilGridsParams(v)
-
-fib <- landinit::buildForestImputationBasis()
-
-forest_list <- landinit::getForestList(v, fib, lct)

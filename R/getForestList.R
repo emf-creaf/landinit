@@ -54,11 +54,11 @@ getForestList<-function(pts, fib, lct,
   cc = sf::st_coordinates(pts)
   wselev = pts$elevation
   cellifn = rep(NA,length(ws_cl1))
-  pb = txtProgressBar(0, length(ws_cl1), style = 3)
+  # pb = txtProgressBar(0, length(ws_cl1), style = 3)
   notfound = 0
 
   for(i in 1:length(ws_cl1)) {
-    setTxtProgressBar(pb,i)
+    # setTxtProgressBar(pb,i)
     if(lct[i]=="forest" || lct[i]=="wildland") {
       ifn_same_cl1 = which(ifn_cl1==ws_cl1[i])
       ifn_same_cl2 = which(ifn_cl2==ws_cl2[i])
@@ -94,7 +94,7 @@ getForestList<-function(pts, fib, lct,
     }
   }
 
-  if(notfound>0) cat(paste0("\n",notfound," forest cells out of ",sum(lct=="forest")," could not be imputated IFN plot\n"))
+  if(notfound>0) message(paste0("[",notfound," forest cells out of ",sum(lct=="forest")," could not be imputated a forest plot]"))
   ws_forestlist = vector("list", length(cellifn))
   for(i in 1:length(ws_forestlist)) {
     if(!is.na(cellifn[i])) {

@@ -56,9 +56,9 @@ getSoilGridsParams<-function(pts, dataset_path = "~/OneDrive/Datasets/", widths 
   sg_widths = c(50,100,150,300,400,1000)
   n <- length(pts_terra)
   soil_list <- vector("list", n)
-  pb = txtProgressBar(1, n, style = 3)
+  # pb = txtProgressBar(1, n, style = 3)
   for(i in 1:n) {
-    setTxtProgressBar(pb, i)
+    # setTxtProgressBar(pb, i)
     df <- data.frame(widths = sg_widths,
                      clay = as.numeric(clay[i,]),
                      sand = as.numeric(sand[i,]),
