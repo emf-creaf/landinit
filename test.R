@@ -26,4 +26,4 @@ v <- terra::as.points(sgt_pnasm)
 
 v2 <- landinit::addLandCoverType(v)
 
-pnasm_soils <- landinit::buildSoils(v)
+v3 <- landinit::addSoilGridsParams(v2)

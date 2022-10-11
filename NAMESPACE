@@ -1,6 +1,8 @@
 importFrom(terra, "rast", "resample", "crs", "vect")
 importFrom(medfateutils, "redefineSoilLayers", "modifySoilParams")
+importFrom(sf, "st_read","st_crs", "st_drop_geometry", "st_geometry",
+               "st_as_sf", "st_transform", "st_intersects")
 
 export(buildTopography)
-export(buildSoils)
+export(addSoilGridsParams)
 export(addLandCoverType)
