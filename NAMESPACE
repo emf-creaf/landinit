@@ -1,0 +1,3 @@
+importFrom(terra, "rast", "resample", "crs", "vect")
+export(buildTopography)
+export(buildSoils)
