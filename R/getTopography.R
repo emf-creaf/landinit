@@ -9,14 +9,14 @@
 getTopography<-function(boundaries, grid = NULL,
                           dataset_path = "~/OneDrive/Datasets/") {
   #Load topography
-  message("1. Load DEM")
+  message("  1. Load DEM")
   sgt_terra = c(terra::rast(paste0(dataset_path,"MDT/Products/Catalunya_elevation_30m.tif")),
                 terra::rast(paste0(dataset_path,"MDT/Products/Catalunya_slope_30m.tif")),
                 terra::rast(paste0(dataset_path,"MDT/Products/Catalunya_aspect_30m.tif")))
   names(sgt_terra)<-c("elevation", "slope", "aspect")
 
   # If grid is not missing resample topography
-  message("2. Crop DEM (after possibly resampling grid)")
+  message("  2. Crop DEM (after possibly resampling grid)")
   if(!is.null(grid)) {
     terra::crs(grid) <- terra::crs(sgt_terra)
     sgt_terra <- terra::resample(sgt_terra, grid, method="bilinear")

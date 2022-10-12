@@ -19,7 +19,7 @@ getLandCoverType<-function(pts = NULL,
   mfe25data = sf::st_drop_geometry(mfe25_sf)
   mfe25geom = sf::st_geometry(mfe25_sf)
 
-  message("  2. Intersecting geometry")
+  message("  2. Intersecting geometry to get land cover data")
   a=sf::st_intersects(pts_t, mfe25geom)
 
   message("  3. Reclassifying land cover")

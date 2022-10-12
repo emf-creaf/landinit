@@ -13,11 +13,11 @@
 buildForestedLandscape<-function(boundaries, grid, fib,
                                  dataset_path = "~/OneDrive/Datasets/") {
   message("A. TOPOGRAPHY")
-  sgt_pnasm <-landinit::getTopography(boundaries, grid = grid,
+  sgt_out <-landinit::getTopography(boundaries, grid = grid,
                                         dataset_path = dataset_path)
   gc()
-  pts <- sf::st_as_sf(terra::as.points(sgt_pnasm))
-  rm(sgt_pnasm)
+  pts <- sf::st_as_sf(terra::as.points(sgt_out))
+  rm(sgt_out)
   gc()
 
   message("B. LAND COVER")
@@ -28,21 +28,26 @@ buildForestedLandscape<-function(boundaries, grid, fib,
   lct_forest <- lct[lct=="forest"]
   rm(pts)
 
-  message("C. SOIL LIST")
-  soil_list <- landinit::getSoilGridsParams(pts_forest, dataset_path = dataset_path)
+  message("C. SOIL DATAFRAME LIST")
+  soil_dataframe_list <- landinit::getSoilGridsParams(pts_forest, dataset_path = dataset_path)
 
   message("D. FOREST LIST")
   forest_list <- landinit::getForestList(pts_forest, fib, lct_forest, dataset_path = dataset_path)
 
   message("E. MODIFY SOIL ROCK CONTENT")
-  for(i in 1:length(soil_list)) {
-    f = forest_list[[i]]
-    if(!is.na(f$ID)) {
-      roc = c(5.0, 12.5, 37.5, 67.5, 87.5)[fib$rocosidad[f$ID]]
+  #Looks for the closest forest plot and get its content
+  ifncc = sf::st_coordinates(sf::st_transform(sf::st_geometry(fib), sf::st_crs(pts_forest)))
+  cc = sf::st_coordinates(pts_forest)
+  for(i in 1:length(soil_dataframe_list)) {
+    d=sqrt(rowSums(sweep(ifncc,2,cc[i,])^2))
+    ind = which.min(d)
+    roc_class = fib$rocosidad[ind]
+    if(!is.na(roc_class)) {
+      roc = c(5.0, 12.5, 37.5, 67.5, 87.5)[roc_class]
     } else {
       roc = 5.0
     }
-    soil_list[[i]] = medfateutils::modifySoilRockContent(soil_list[[i]], roc)
+    soil_dataframe_list[[i]] = medfateutils::modifySoilRockContent(soil_dataframe_list[[i]], roc)
   }
 
   message("F. BUILD SpatialPixelsLandscape")
@@ -52,6 +57,6 @@ buildForestedLandscape<-function(boundaries, grid, fib,
                                  slope = spdf$slope, aspect = spdf$aspect,
                                  proj4string = spdf@proj4string,
                                  grid = spdf@grid)
-  spl <- SpatialPixelsLandscape(spt, lct, forest_list, soil_list)
+  spl <- SpatialPixelsLandscape(spt, lct, forest_list, soil_dataframe_list)
   return(spl)
 }

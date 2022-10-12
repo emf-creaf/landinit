@@ -52,7 +52,7 @@ getSoilGridsParams<-function(pts, dataset_path = "~/OneDrive/Datasets/", widths 
     bdricm <- bdricm*10 #cm to mm
   }
 
-  message("  2. Defining soil parameter data frames.")
+  message("  2. Defining soil parameter data frames")
   sg_widths = c(50,100,150,300,400,1000)
   n <- length(pts_terra)
   soil_list <- vector("list", n)

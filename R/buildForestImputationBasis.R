@@ -36,7 +36,7 @@ buildForestImputationBasis<-function(dataset_path = "~/OneDrive/Datasets/",
   ifn_sf$rocosidad = rocosidad
 
   #Determine MFE of IFN cells
-  message("  3. Intersecting geometry")
+  message("  3. Intersecting geometry to get forest composition and structure")
   a=sf::st_intersects(ifn_sf, sf::st_geometry(mfe25_sf))
   for_ifn = sf::st_drop_geometry(mfe25_sf)[as.numeric(a),]
   row.names(for_ifn)<-ids
