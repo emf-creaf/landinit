@@ -31,9 +31,13 @@ pnasm <- sf::st_transform(pnasm, sf::st_crs(pnasm_perif))
 boundaries <-sf::st_union(pnasm, pnasm_perif, by_feature = TRUE)
 
 fib<-buildForestImputationBasis(dataset_path = dataset_path,
-                                ifn_source = "IFN4")
+                                ifn_source = "IFN4",
+                                additional_sources = "PNASM3")
 spl<-buildForestedLandscape(boundaries, grid = x200, fib,
+                            merge_trees = TRUE,
+                            correct_lidar = TRUE,
+                            rfc_estimation = "constant",
                             dataset_path = dataset_path)
 
-medfateland::shinyplotland(spl)
+# medfateland::shinyplotland(spl)
 

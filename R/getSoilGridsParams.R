@@ -1,12 +1,14 @@
 #' Builds a list of soil objects for a set of target point locations
 #'
-#' @param pts target points
-#' @param dataset_path path to the 'Datasets' directory
+#' @param pts target locations
 #' @param widths soil layer widths (in mm)
 #' @param modify_soil_depth truncates soil depth according to Shagguan et al. (2017)
+#' @param dataset_path path to the 'Datasets' directory
 #'
-getSoilGridsParams<-function(pts, dataset_path = "~/OneDrive/Datasets/", widths = c(300,700,1000,2000),
-                     modify_soil_depth = TRUE) {
+getSoilGridsParams<-function(pts,
+                             widths = c(300,700,1000,2000),
+                             modify_soil_depth = TRUE,
+                             dataset_path = "~/OneDrive/Datasets/") {
 
   soilgrids_points_var<-function(pts_terra, var = "bdod") {
     m <- c(terra::rast(paste0(dataset_path, "Soils/Sources/SoilGrids/",toupper(var),"/",var,"_0_5.tif")),

@@ -6,19 +6,19 @@
 \usage{
 getSoilGridsParams(
   pts,
-  dataset_path = "~/OneDrive/Datasets/",
   widths = c(300, 700, 1000, 2000),
-  modify_soil_depth = TRUE
+  modify_soil_depth = TRUE,
+  dataset_path = "~/OneDrive/Datasets/"
 )
 }
 \arguments{
-\item{pts}{target points}
-
-\item{dataset_path}{path to the 'Datasets' directory}
+\item{pts}{target locations}
 
 \item{widths}{soil layer widths (in mm)}
 
 \item{modify_soil_depth}{truncates soil depth according to Shagguan et al. (2017)}
+
+\item{dataset_path}{path to the 'Datasets' directory}
 }
 \description{
 Builds a list of soil objects for a set of target point locations

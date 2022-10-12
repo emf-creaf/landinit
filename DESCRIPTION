@@ -10,6 +10,6 @@ Description: Functions to create spatial inputs for simulations over forested
     landscapes.
 License: GPL (>= 2)
 Encoding: UTF-8
-Imports: sf, terra, sp, medfateutils, medfateland, meteoland
+Imports: sf, terra, sp, medfate, medfateutils, medfateland, meteoland
 LazyData: true
 RoxygenNote: 7.2.1

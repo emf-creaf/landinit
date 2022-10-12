@@ -11,6 +11,9 @@
 #' @seealso buildForestImputationBasis
 #'
 buildForestedLandscape<-function(boundaries, grid, fib,
+                                 merge_trees = TRUE,
+                                 correct_lidar = TRUE,
+                                 rfc_estimation = "constant",
                                  dataset_path = "~/OneDrive/Datasets/") {
   message("A. TOPOGRAPHY")
   sgt_out <-landinit::getTopography(boundaries, grid = grid,
@@ -24,30 +27,43 @@ buildForestedLandscape<-function(boundaries, grid, fib,
   lct <- landinit::getLandCoverType(pts, dataset_path = dataset_path)
   gc()
 
-  pts_forest <- pts[lct=="forest",]
-  lct_forest <- lct[lct=="forest"]
-  rm(pts)
+  pts <- pts[lct=="forest",]
+  lct <- lct[lct=="forest"]
 
   message("C. SOIL DATAFRAME LIST")
-  soil_dataframe_list <- landinit::getSoilGridsParams(pts_forest, dataset_path = dataset_path)
+  soil_dataframe_list <- landinit::getSoilGridsParams(pts,
+                                                      modify_soil_depth = TRUE,
+                                                      dataset_path = dataset_path)
 
   message("D. FOREST LIST")
-  forest_list <- landinit::getForestList(pts_forest, fib, lct_forest, dataset_path = dataset_path)
+  forest_list <- landinit::getForestList(pts = pts,
+                                         fib = fib,
+                                         lct = lct,
+                                         merge_trees = merge_trees,
+                                         correct_lidar = correct_lidar,
+                                         dataset_path = dataset_path)
 
   message("E. MODIFY SOIL ROCK CONTENT")
-  #Looks for the closest forest plot and get its content
-  ifncc = sf::st_coordinates(sf::st_transform(sf::st_geometry(fib), sf::st_crs(pts_forest)))
-  cc = sf::st_coordinates(pts_forest)
-  for(i in 1:length(soil_dataframe_list)) {
-    d=sqrt(rowSums(sweep(ifncc,2,cc[i,])^2))
-    ind = which.min(d)
-    roc_class = fib$rocosidad[ind]
-    if(!is.na(roc_class)) {
-      roc = c(5.0, 12.5, 37.5, 67.5, 87.5)[roc_class]
-    } else {
-      roc = 5.0
+  if(rfc_estimation=="closest_ifn") {
+    #Looks for the closest forest plot and get its content
+    ifncc = sf::st_coordinates(sf::st_transform(sf::st_geometry(fib), sf::st_crs(pts)))
+    cc = sf::st_coordinates(pts)
+    for(i in 1:length(soil_dataframe_list)) {
+      d=sqrt(rowSums(sweep(ifncc,2,cc[i,])^2))
+      ind = which.min(d)
+      roc_class = fib$rocosidad[ind]
+      if(!is.na(roc_class)) {
+        roc = c(5.0, 12.5, 37.5, 67.5, 87.5)[roc_class]
+      } else {
+        roc = 5.0
+      }
+      soil_dataframe_list[[i]] = medfateutils::modifySoilRockContent(soil_dataframe_list[[i]], roc)
     }
-    soil_dataframe_list[[i]] = medfateutils::modifySoilRockContent(soil_dataframe_list[[i]], roc)
+  } else if(rcf_estimation == "constant") {
+    # Correct assuming 10% stoniness at the surface
+    for(i in 1:length(soil_dataframe_list)) {
+      soil_dataframe_list[[i]] = medfateutils::modifySoilRockContent(soil_dataframe_list[[i]], 10.0)
+    }
   }
 
   message("F. BUILD SpatialPixelsLandscape")

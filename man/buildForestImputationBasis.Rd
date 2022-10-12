@@ -6,7 +6,8 @@
 \usage{
 buildForestImputationBasis(
   dataset_path = "~/OneDrive/Datasets/",
-  ifn_source = "IFN4"
+  ifn_source = "IFN4",
+  additional_sources = character(0)
 )
 }
 \arguments{

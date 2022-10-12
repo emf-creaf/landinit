@@ -8,6 +8,9 @@ buildForestedLandscape(
   boundaries,
   grid,
   fib,
+  merge_trees = TRUE,
+  correct_lidar = TRUE,
+  rfc_estimation = "constant",
   dataset_path = "~/OneDrive/Datasets/"
 )
 }
