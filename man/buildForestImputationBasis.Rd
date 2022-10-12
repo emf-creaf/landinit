@@ -4,10 +4,15 @@
 \alias{buildForestImputationBasis}
 \title{Assembles forest plot data for forest stand imputation}
 \usage{
-buildForestImputationBasis(dataset_path = "~/OneDrive/Datasets/")
+buildForestImputationBasis(
+  dataset_path = "~/OneDrive/Datasets/",
+  ifn_source = "IFN4"
+)
 }
 \arguments{
 \item{dataset_path}{path to the 'Datasets' directory}
+
+\item{ifn_source}{string indicating the IFN survey (either 'IFN3' or 'IFN4') to use as imputation basis}
 }
 \description{
 Assembles forest plot data for forest stand imputation

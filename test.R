@@ -30,7 +30,10 @@ pnasm_perif = sf::st_read(paste0(dataset_path, "ParquesNacionales/PNASM/Sources/
 pnasm <- sf::st_transform(pnasm, sf::st_crs(pnasm_perif))
 boundaries <-sf::st_union(pnasm, pnasm_perif, by_feature = TRUE)
 
-spl<-buildForestedLandscape(boundaries, grid = x200, dataset_path = dataset_path)
+fib<-buildForestImputationBasis(dataset_path = dataset_path,
+                                ifn_source = "IFN4")
+spl<-buildForestedLandscape(boundaries, grid = x200, fib,
+                            dataset_path = dataset_path)
 
 medfateland::shinyplotland(spl)
 

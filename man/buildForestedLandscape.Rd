@@ -4,15 +4,26 @@
 \alias{buildForestedLandscape}
 \title{Builds an object of SpatialPixelsLandscape for a target area}
 \usage{
-buildForestedLandscape(boundaries, grid, dataset_path = "~/OneDrive/Datasets/")
+buildForestedLandscape(
+  boundaries,
+  grid,
+  fib,
+  dataset_path = "~/OneDrive/Datasets/"
+)
 }
 \arguments{
 \item{boundaries}{spatial polygons delimiting the target area}
 
 \item{grid}{raster definition to resample topography at the desired resolution}
 
+\item{fib}{forest imputation basis, returned by function buildForestImputationBasis}
+
 \item{dataset_path}{path to the 'Datasets' directory}
 }
 \description{
-Builds an object of SpatialPixelsLandscape for a target area
+This function makes internal calls to other package functions to obtain topography, land cover,
+soil and forest data over the target area.
+}
+\seealso{
+buildForestImputationBasis
 }

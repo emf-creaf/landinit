@@ -2,11 +2,11 @@
 #'
 #' Extracts a raster with elevation, slope and aspect for a target area
 #'
-#' @param boundaries spatial polygons delimiting the target area
+#' @param boundaries spatial object (normally polygons) delimiting the target area
 #' @param grid raster definition to resample topography at the desired resolution
 #' @param dataset_path path to the 'Datasets' directory
 #'
-buildTopography<-function(boundaries, grid = NULL,
+getTopography<-function(boundaries, grid = NULL,
                           dataset_path = "~/OneDrive/Datasets/") {
   #Load topography
   message("1. Load DEM")

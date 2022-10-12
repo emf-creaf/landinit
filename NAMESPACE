@@ -1,15 +1,15 @@
 importFrom("medfateland", "SpatialPixelsLandscape")
 importFrom("meteoland", "SpatialPixelsTopography")
 importFrom("terra", "rast", "resample", "crs", "vect")
-importFrom("medfateutils", "redefineSoilLayers", "modifySoilParams")
+importFrom("medfateutils", "redefineSoilLayers", "modifySoilDepth", "modifySoilRockContent")
 importFrom("sf", "st_read","st_crs", "st_drop_geometry", "st_geometry",
                "st_as_sf", "st_transform", "st_intersects")
 importFrom("utils", "setTxtProgressBar", "txtProgressBar")
 importFrom("sp", "gridded", "gridded<-")
 
 export(buildForestedLandscape)
-export(buildTopography)
+export(buildForestImputationBasis)
+export(getTopography)
 export(getSoilGridsParams)
 export(getLandCoverType)
-export(buildForestImputationBasis)
 export(getForestList)

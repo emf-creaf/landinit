@@ -3,10 +3,10 @@
 #' @param pts target points
 #' @param dataset_path path to the 'Datasets' directory
 #' @param widths soil layer widths (in mm)
-#' @param crop_soil_depth truncates soil depth according to Shagguan et al. (2017)
+#' @param modify_soil_depth truncates soil depth according to Shagguan et al. (2017)
 #'
 getSoilGridsParams<-function(pts, dataset_path = "~/OneDrive/Datasets/", widths = c(300,700,1000,2000),
-                     crop_soil_depth = TRUE) {
+                     modify_soil_depth = TRUE) {
 
   soilgrids_points_var<-function(pts_terra, var = "bdod") {
     m <- c(terra::rast(paste0(dataset_path, "Soils/Sources/SoilGrids/",toupper(var),"/",var,"_0_5.tif")),
@@ -21,7 +21,7 @@ getSoilGridsParams<-function(pts, dataset_path = "~/OneDrive/Datasets/", widths 
     return(y)
   }
 
-  message("1. Extracting soilgrids.")
+  message("  1. Extracting data from SoilGrids")
   # Coerce to terra vector
   pts_terra <- terra::vect(pts)
 
@@ -46,13 +46,13 @@ getSoilGridsParams<-function(pts, dataset_path = "~/OneDrive/Datasets/", widths 
 
 
   #Soil depth
-  if(crop_soil_depth) {
+  if(modify_soil_depth) {
     m<-terra::rast(paste0(dataset_path, "Soils/Sources/SoilDepth_Shangguan2017/BDRICM_M_250m_ll.tif"))
     bdricm <-terra::extract(m, terra::project(pts_terra, terra::crs(m)))[,-1]
     bdricm <- bdricm*10 #cm to mm
   }
 
-  message("2. Defining soil parameter data frames.")
+  message("  2. Defining soil parameter data frames.")
   sg_widths = c(50,100,150,300,400,1000)
   n <- length(pts_terra)
   soil_list <- vector("list", n)
@@ -66,7 +66,7 @@ getSoilGridsParams<-function(pts, dataset_path = "~/OneDrive/Datasets/", widths 
                      bd = as.numeric(bd[i,]),
                      rfc = as.numeric(rfc[i,]))
     df_redef <- medfateutils::redefineSoilLayers(df, widths)
-    if(crop_soil_depth) soil_list[[i]] <- medfateutils::modifySoilParams(df_redef, bdricm[i])
+    if(modify_soil_depth) soil_list[[i]] <- medfateutils::modifySoilDepth(df_redef, bdricm[i])
     else soil_list[[i]] <- df_redef
   }
 #
