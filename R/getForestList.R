@@ -135,6 +135,7 @@ getForestList<-function(pts, fib, lct,
     gc()
 
     message("  7. Correcting density and tree height")
+    maxbasalarea = 120
     for(i in 1:length(ws_forestlist)) {
       f = ws_forestlist[[i]]
       nvec = f$treeData$N
@@ -146,7 +147,11 @@ getForestList<-function(pts, fib, lct,
           hm_ratio = pts_hm$`variables-biofisiques-arbrat-v1r0-hmitjana-2016-2017`[i]/fib$hm[w]
           bf_ratio = pts_bf$`variables-biofisiques-arbrat-v1r0-bf-2016-2017`[i]/fib$bf[w]
           if(!is.na(hm_ratio)) f$treeData$Height = hvec*hm_ratio
-          if(!is.na(bf_ratio)) f$treeData$N = nvec*bf_ratio
+          if(!is.na(bf_ratio)) {
+            ba = medfate::stand_basalArea(f)
+            if((ba*bf_ratio) > maxbasalarea) bf_ratio = maxbasalarea/ba
+            f$treeData$N = nvec*bf_ratio
+          }
           ws_forestlist[[i]] = f
         }
       }

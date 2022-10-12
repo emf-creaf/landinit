@@ -59,7 +59,7 @@ buildForestedLandscape<-function(boundaries, grid, fib,
       }
       soil_dataframe_list[[i]] = medfateutils::modifySoilRockContent(soil_dataframe_list[[i]], roc)
     }
-  } else if(rcf_estimation == "constant") {
+  } else if(rfc_estimation == "constant") {
     # Correct assuming 10% stoniness at the surface
     for(i in 1:length(soil_dataframe_list)) {
       soil_dataframe_list[[i]] = medfateutils::modifySoilRockContent(soil_dataframe_list[[i]], 10.0)
@@ -67,7 +67,7 @@ buildForestedLandscape<-function(boundaries, grid, fib,
   }
 
   message("F. BUILD SpatialPixelsLandscape")
-  spdf <- as(pts_forest,"Spatial")
+  spdf <- as(pts,"Spatial")
   gridded(spdf)<-TRUE
   spt <- SpatialPixelsTopography(spdf@coords, elevation = spdf$elevation,
                                  slope = spdf$slope, aspect = spdf$aspect,
