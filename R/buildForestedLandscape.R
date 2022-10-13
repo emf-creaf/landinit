@@ -45,7 +45,19 @@ buildForestedLandscape<-function(boundaries, grid, fib,
                                          dataset_path = dataset_path)
 
   message("E. MODIFY SOIL ROCK CONTENT")
-  if(initializationParams$rfc_estimation=="closest_ifn") {
+  if(initializationParams$rfc_estimation=="imputed_ifn") {
+    for(i in 1:length(soil_dataframe_list)) {
+      ind = forest_list[[i]]$ID
+      roc_class = NA
+      if(!is.na(ind)) roc_class = fib$rocosidad[ind]
+      if(!is.na(roc_class)) {
+        roc = c(5.0, 12.5, 37.5, 67.5, 87.5)[roc_class]
+      } else {
+        roc = 5.0
+      }
+      soil_dataframe_list[[i]] = medfateutils::modifySoilRockContent(soil_dataframe_list[[i]], roc)
+    }
+  } else if(initializationParams$rfc_estimation=="closest_ifn") {
     #Looks for the closest forest plot and get its content
     ifncc = sf::st_coordinates(sf::st_transform(sf::st_geometry(fib), sf::st_crs(pts)))
     cc = sf::st_coordinates(pts)
