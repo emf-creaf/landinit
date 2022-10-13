@@ -8,9 +8,7 @@ buildForestedLandscape(
   boundaries,
   grid,
   fib,
-  merge_trees = TRUE,
-  correct_lidar = TRUE,
-  rfc_estimation = "constant",
+  initializationParams = defaultInitializationParams(),
   dataset_path = "~/OneDrive/Datasets/"
 )
 }
@@ -21,7 +19,12 @@ buildForestedLandscape(
 
 \item{fib}{forest imputation basis, returned by function buildForestImputationBasis}
 
+\item{initializationParams}{list with initialisation options}
+
 \item{dataset_path}{path to the 'Datasets' directory}
+}
+\value{
+an object of class 'SpatialPixelsLandscape'
 }
 \description{
 This function makes internal calls to other package functions to obtain topography, land cover,
