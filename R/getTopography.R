@@ -4,10 +4,12 @@
 #'
 #' @param boundaries spatial object (normally polygons) delimiting the target area
 #' @param grid raster definition to resample topography at the desired resolution
+#' @param mask boolean flag to mask raster according to boundaries
 #' @param dataset_path path to the 'Datasets' directory
 #'
 getTopography<-function(boundaries, grid = NULL,
-                          dataset_path = "~/OneDrive/Datasets/") {
+                        mask = TRUE,
+                        dataset_path = "~/OneDrive/Datasets/") {
   #Load topography
   message("  1. Load DEM")
   sgt_terra = c(terra::rast(paste0(dataset_path,"MDT/Products/Catalunya_elevation_30m.tif")),
@@ -24,7 +26,7 @@ getTopography<-function(boundaries, grid = NULL,
   gc()
 
   # Crop raster to the vector data provided
-  sgt_out <-terra::crop(sgt_terra, terra::vect(boundaries), mask = TRUE)
+  sgt_out <-terra::crop(sgt_terra, terra::vect(boundaries), mask = mask)
   gc()
   return(sgt_out)
 }

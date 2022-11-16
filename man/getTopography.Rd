@@ -4,12 +4,19 @@
 \alias{getTopography}
 \title{Extracts a raster with topography variables from DEM}
 \usage{
-getTopography(boundaries, grid = NULL, dataset_path = "~/OneDrive/Datasets/")
+getTopography(
+  boundaries,
+  grid = NULL,
+  mask = TRUE,
+  dataset_path = "~/OneDrive/Datasets/"
+)
 }
 \arguments{
 \item{boundaries}{spatial object (normally polygons) delimiting the target area}
 
 \item{grid}{raster definition to resample topography at the desired resolution}
+
+\item{mask}{boolean flag to mask raster according to boundaries}
 
 \item{dataset_path}{path to the 'Datasets' directory}
 }
